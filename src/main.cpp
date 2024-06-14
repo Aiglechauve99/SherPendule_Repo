@@ -1,19 +1,16 @@
 #include <Arduino.h>
 #include <LibS3GRO.h>
 
-// put function declarations here:
-int myFunction(int, int);
+ArduinoX AX_;
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  AX_.init();
+  pinMode(LED_BUILTIN, OUTPUT);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  delay(1000);
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(1000);
+  digitalWrite(LED_BUILTIN, LOW);
 }
