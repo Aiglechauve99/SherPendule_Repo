@@ -1,0 +1,9 @@
+Liste des fonctions à faire :
+    - Faire tourner le moteur(Émile)
+    - Mesurer le PID
+    - Controle PID
+    - PID consigne atteinte
+    - Prendre des mesures avec le potentiomètre
+    - Prendre des mesures avec la centrale inertielle
+    - Prendre des mesures avec l'encodeur du moteur (Émile)
+    

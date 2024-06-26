@@ -1,6 +1,0 @@
-Liste des fonctions à faire :
-    - PWM avec Timer interne pour le moteur (Émile)
-    - Mesurer le PID
-    - Controle PID
-    - PID consigne atteinte
-    
