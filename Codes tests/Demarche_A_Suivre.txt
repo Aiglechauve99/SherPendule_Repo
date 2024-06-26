@@ -1,0 +1,6 @@
+1) Allez dans SherPendule_Repo/Codes tests/Template test/
+2) Copier le dossier Test_X dans SherPendule_Repo/Codes tests/
+3) Renommer le dossier avec le nom de votre test/fonction à coder
+4) Coder votre fonction dans le main
+
+Les librairies nécéssaires sont déjà incluses.
