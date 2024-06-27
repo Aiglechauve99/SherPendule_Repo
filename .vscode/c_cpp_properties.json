@@ -1,0 +1,72 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "c:/Users/Admin/Documents/USherbrooke/S3/Projet/SherPendule/include",
+                "c:/Users/Admin/Documents/USherbrooke/S3/Projet/SherPendule/src",
+                "c:/Users/Admin/Documents/USherbrooke/S3/Projet/SherPendule/.pio/libdeps/megaatmega2560/LibS3GRO/src",
+                "c:/Users/Admin/Documents/USherbrooke/S3/Projet/SherPendule/.pio/libdeps/megaatmega2560/Grove IMU 9DOF",
+                "c:/Users/Admin/Documents/USherbrooke/S3/Projet/SherPendule/.pio/libdeps/megaatmega2560/ArduinoJson/src",
+                "C:/Users/Admin/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                "c:/Users/Admin/Documents/USherbrooke/S3/Projet/SherPendule/.pio/libdeps/megaatmega2560/Adafruit INA219",
+                "c:/Users/Admin/Documents/USherbrooke/S3/Projet/SherPendule/.pio/libdeps/megaatmega2560/Adafruit BusIO",
+                "C:/Users/Admin/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "C:/Users/Admin/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                "C:/Users/Admin/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "C:/Users/Admin/.platformio/packages/framework-arduino-avr/variants/mega",
+                "c:/Users/Admin/Documents/USherbrooke/S3/Projet/SherPendule/.pio/libdeps/megaatmega2560/Adafruit GFX Library",
+                "c:/Users/Admin/Documents/USherbrooke/S3/Projet/SherPendule/.pio/libdeps/megaatmega2560/Adafruit NeoPixel",
+                "c:/Users/Admin/Documents/USherbrooke/S3/Projet/SherPendule/.pio/libdeps/megaatmega2560/Adafruit SSD1306",
+                "C:/Users/Admin/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "C:/Users/Admin/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "c:/Users/Admin/Documents/USherbrooke/S3/Projet/SherPendule/include",
+                    "c:/Users/Admin/Documents/USherbrooke/S3/Projet/SherPendule/src",
+                    "c:/Users/Admin/Documents/USherbrooke/S3/Projet/SherPendule/.pio/libdeps/megaatmega2560/LibS3GRO/src",
+                    "c:/Users/Admin/Documents/USherbrooke/S3/Projet/SherPendule/.pio/libdeps/megaatmega2560/Grove IMU 9DOF",
+                    "c:/Users/Admin/Documents/USherbrooke/S3/Projet/SherPendule/.pio/libdeps/megaatmega2560/ArduinoJson/src",
+                    "C:/Users/Admin/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    "c:/Users/Admin/Documents/USherbrooke/S3/Projet/SherPendule/.pio/libdeps/megaatmega2560/Adafruit INA219",
+                    "c:/Users/Admin/Documents/USherbrooke/S3/Projet/SherPendule/.pio/libdeps/megaatmega2560/Adafruit BusIO",
+                    "C:/Users/Admin/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "C:/Users/Admin/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    "C:/Users/Admin/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "C:/Users/Admin/.platformio/packages/framework-arduino-avr/variants/mega",
+                    "c:/Users/Admin/Documents/USherbrooke/S3/Projet/SherPendule/.pio/libdeps/megaatmega2560/Adafruit GFX Library",
+                    "c:/Users/Admin/Documents/USherbrooke/S3/Projet/SherPendule/.pio/libdeps/megaatmega2560/Adafruit NeoPixel",
+                    "c:/Users/Admin/Documents/USherbrooke/S3/Projet/SherPendule/.pio/libdeps/megaatmega2560/Adafruit SSD1306",
+                    "C:/Users/Admin/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "C:/Users/Admin/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60115",
+                "ARDUINO_AVR_MEGA2560",
+                "F_CPU=16000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "__AVR_ATmega2560__",
+                ""
+            ],
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++11",
+            "compilerPath": "C:/Users/Admin/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe",
+            "compilerArgs": [
+                "-mmcu=atmega2560",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
