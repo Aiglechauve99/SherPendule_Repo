@@ -1,0 +1,72 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "d:/Ecole/Uni/Session 3/Projet_Data/SherPendule_Repo/Codes tests/Test_JSON/include",
+                "d:/Ecole/Uni/Session 3/Projet_Data/SherPendule_Repo/Codes tests/Test_JSON/src",
+                "d:/Ecole/Uni/Session 3/Projet_Data/SherPendule_Repo/Codes tests/Test_JSON/.pio/libdeps/megaatmega2560/LibS3GRO/src",
+                "d:/Ecole/Uni/Session 3/Projet_Data/SherPendule_Repo/Codes tests/Test_JSON/.pio/libdeps/megaatmega2560/Grove IMU 9DOF",
+                "d:/Ecole/Uni/Session 3/Projet_Data/SherPendule_Repo/Codes tests/Test_JSON/.pio/libdeps/megaatmega2560/ArduinoJson/src",
+                "C:/Users/Utilisateur/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                "d:/Ecole/Uni/Session 3/Projet_Data/SherPendule_Repo/Codes tests/Test_JSON/.pio/libdeps/megaatmega2560/Adafruit INA219",
+                "d:/Ecole/Uni/Session 3/Projet_Data/SherPendule_Repo/Codes tests/Test_JSON/.pio/libdeps/megaatmega2560/Adafruit BusIO",
+                "C:/Users/Utilisateur/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "C:/Users/Utilisateur/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                "C:/Users/Utilisateur/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "C:/Users/Utilisateur/.platformio/packages/framework-arduino-avr/variants/mega",
+                "d:/Ecole/Uni/Session 3/Projet_Data/SherPendule_Repo/Codes tests/Test_JSON/.pio/libdeps/megaatmega2560/Adafruit GFX Library",
+                "d:/Ecole/Uni/Session 3/Projet_Data/SherPendule_Repo/Codes tests/Test_JSON/.pio/libdeps/megaatmega2560/Adafruit NeoPixel",
+                "d:/Ecole/Uni/Session 3/Projet_Data/SherPendule_Repo/Codes tests/Test_JSON/.pio/libdeps/megaatmega2560/Adafruit SSD1306",
+                "C:/Users/Utilisateur/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "C:/Users/Utilisateur/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "d:/Ecole/Uni/Session 3/Projet_Data/SherPendule_Repo/Codes tests/Test_JSON/include",
+                    "d:/Ecole/Uni/Session 3/Projet_Data/SherPendule_Repo/Codes tests/Test_JSON/src",
+                    "d:/Ecole/Uni/Session 3/Projet_Data/SherPendule_Repo/Codes tests/Test_JSON/.pio/libdeps/megaatmega2560/LibS3GRO/src",
+                    "d:/Ecole/Uni/Session 3/Projet_Data/SherPendule_Repo/Codes tests/Test_JSON/.pio/libdeps/megaatmega2560/Grove IMU 9DOF",
+                    "d:/Ecole/Uni/Session 3/Projet_Data/SherPendule_Repo/Codes tests/Test_JSON/.pio/libdeps/megaatmega2560/ArduinoJson/src",
+                    "C:/Users/Utilisateur/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    "d:/Ecole/Uni/Session 3/Projet_Data/SherPendule_Repo/Codes tests/Test_JSON/.pio/libdeps/megaatmega2560/Adafruit INA219",
+                    "d:/Ecole/Uni/Session 3/Projet_Data/SherPendule_Repo/Codes tests/Test_JSON/.pio/libdeps/megaatmega2560/Adafruit BusIO",
+                    "C:/Users/Utilisateur/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "C:/Users/Utilisateur/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    "C:/Users/Utilisateur/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "C:/Users/Utilisateur/.platformio/packages/framework-arduino-avr/variants/mega",
+                    "d:/Ecole/Uni/Session 3/Projet_Data/SherPendule_Repo/Codes tests/Test_JSON/.pio/libdeps/megaatmega2560/Adafruit GFX Library",
+                    "d:/Ecole/Uni/Session 3/Projet_Data/SherPendule_Repo/Codes tests/Test_JSON/.pio/libdeps/megaatmega2560/Adafruit NeoPixel",
+                    "d:/Ecole/Uni/Session 3/Projet_Data/SherPendule_Repo/Codes tests/Test_JSON/.pio/libdeps/megaatmega2560/Adafruit SSD1306",
+                    "C:/Users/Utilisateur/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "C:/Users/Utilisateur/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60115",
+                "ARDUINO_AVR_MEGA2560",
+                "F_CPU=16000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "__AVR_ATmega2560__",
+                ""
+            ],
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++11",
+            "compilerPath": "C:/Users/Utilisateur/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe",
+            "compilerArgs": [
+                "-mmcu=atmega2560",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
