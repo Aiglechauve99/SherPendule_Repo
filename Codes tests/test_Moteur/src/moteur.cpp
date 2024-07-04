@@ -1,6 +1,4 @@
-#include <Arduino.h>
-#include <LibS3GRO.h>
-#include <ArduinoJson.h>
+#include "moteur.h"
 
 ArduinoX AX_;
 MotorControl MC_;
