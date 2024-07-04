@@ -1,22 +1,19 @@
-<<<<<<< Updated upstream
-=======
 #include <Arduino.h>
 #include <LibS3GRO.h>
 #include <ArduinoJson.h>
 
 ArduinoX AX_;
-MotorControl MC_;
+JsonDocument doc;
 
 void setup() {
   Serial.begin(115200);
   AX_.init();
-  //MC_.init(6,31);
-  //MC_.setSpeed(-0.5);
-  AX_.setMotorPWM(0,0.5);
+
+  doc["Action"]="Etape 1";
+  doc["Consigne"] = 5;
   
 }
 
 void loop() {
   
 }
->>>>>>> Stashed changes
