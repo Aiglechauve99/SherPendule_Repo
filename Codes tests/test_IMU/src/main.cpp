@@ -9,16 +9,19 @@ void setup() {
   Serial.begin(115200);
   Serial.println("Début");
   AX_.init();
-  IMU_.init();
 
-
-  pinMode(LED_BUILTIN, OUTPUT);
+  Serial.println("IMU init");
+  if(!IMU_.isConnected()){
+    Serial.println("IMU connecté");
+  }
+  else{
+    Serial.println("IMU non connecté");
+  }
+  Serial.println(IMU_.getAccelX());
+  
 }
 
 void loop() {
-  // Ça fait flasher la led sur le Arduino
-  delay(1000);
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(1000);
-  digitalWrite(LED_BUILTIN, LOW);
+  Serial.println("X : "+ String((IMU_.getAccelX()))+"\tY : " + String(IMU_.getAccelY())+"\tZ : "+ String(IMU_.getAccelZ()) + "\tTempérature : "+String(IMU_.getTemp()));
+  delay(500);
 }

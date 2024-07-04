@@ -8,11 +8,11 @@ MotorControl MC_;
 void setup() {
   Serial.begin(115200);
   AX_.init();
-  MC_.init(8,7);
-  
+  MC_.init(6,31);
+  MC_.setSpeed(-0.5);
   
 }
 
 void loop() {
-  MC_.setSpeed(1.0);
+  
 }
