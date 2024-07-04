@@ -15,7 +15,7 @@ class moteur
         ~moteur();
         void move(int dist, int speed, double accelFactor);
         void accel(double accelFactor);
-
+        
 
 };
 
