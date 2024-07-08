@@ -11,6 +11,10 @@ void setup() {
 
   doc["Action"]="Etape 1";
   doc["Consigne"] = 5;
+
+  if (doc["Action"]=="Etape 1"){
+    Serial.println("Etape 1");
+  }
   
 }
 
