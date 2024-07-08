@@ -20,17 +20,17 @@ double EncodeurPos(){
   return pos;
 }
 void loop() {
-    PID_A pidMoteur(2, 0.5, 0, 0.01); 
-    PID_A pidPendule(0, 0, 0, 0.01); 
-    double positionRequis = 1.0, angleRequis = 90;
+    PID_A pidMoteur(2, 0.1, 0, 0.01); 
+    PID_A pidPendule(20, 0, 0, 0.01); 
+    float positionRequis = 0, angleRequis = 88;
     double VitesseMoteur = 0; 
     for (int i = 0; i < 1000; ++i) { 
-      double correctionMoteur = pidMoteur.calculsPID(positionRequis, EncodeurPos());
-      double correctionPendule = pidPendule.calculsPID(angleRequis, PotentioDeg());
+      double correctionMoteur = pidMoteur.calculsPIDmoteur(positionRequis, EncodeurPos());
+      double correctionPendule = pidPendule.calculsPIDpendule(angleRequis, PotentioDeg());
 
-      double commandeVitesseMoteur = correctionMoteur + correctionPendule;
+      double commandeVitesseMoteur = correctionMoteur - correctionPendule;
 
-      VitesseMoteur = commandeVitesseMoteur;
+      VitesseMoteur = commandeVitesseMoteur*0.4;
       AX_.setMotorPWM(0, VitesseMoteur);
       Serial.println(EncodeurPos());
       }
