@@ -1,9 +1,10 @@
 #include <Arduino.h>
 #include <LibS3GRO.h>
 #include <ArduinoJson.h>
+#include "ICM20600.h"
 
 ArduinoX AX_;
-IMU9DOF IMU_;
+ICM20600 IMU_(true);
 
 void setup() {
   Serial.begin(115200);
@@ -11,17 +12,12 @@ void setup() {
   AX_.init();
 
   Serial.println("IMU init");
-  if(!IMU_.isConnected()){
-    Serial.println("IMU connecté");
-  }
-  else{
-    Serial.println("IMU non connecté");
-  }
-  Serial.println(IMU_.getAccelX());
   
 }
 
 void loop() {
-  Serial.println("X : "+ String((IMU_.getAccelX()))+"\tY : " + String(IMU_.getAccelY())+"\tZ : "+ String(IMU_.getAccelZ()) + "\tTempérature : "+String(IMU_.getTemp()));
-  delay(500);
+  Serial.println("----------------------------------------------");
+  Serial.println("Vitesse tangentielle : X : "+ String((IMU_.getAccelerationX()))+"\tY : " + String(IMU_.getAccelerationY())+"\tZ : "+ String(IMU_.getAccelerationZ()) + "\tTempérature : "+String(IMU_.getTemperature()));
+  Serial.println("Vitesse angulaire : X : "+ String((IMU_.getAccelerationX()))+"\tY : " + String(IMU_.getAccelerationY())+"\tZ : "+ String(IMU_.getAccelerationZ()) + "\tTempérature : "+String(IMU_.getTemperature()));
+  delay(100);
 }
