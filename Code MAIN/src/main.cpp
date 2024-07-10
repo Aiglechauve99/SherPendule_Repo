@@ -1,20 +1,21 @@
 #include <Arduino.h>
-#include <LibS3GRO.h>
+
 #include "NotreLibP2.h"
 #include <ArduinoJson.h>
 
-ArduinoX AX_;
+//ArduinoX AX_;
+NotreLibP2 myLib_;
 
 void setup() {
-  Serial.begin(115200);
-  AX_.init();
-  pinMode(LED_BUILTIN, OUTPUT);
+  myLib_.initRobot();
 }
 
 void loop() {
-  // Ça fait flasher la led sur le Arduino
-  delay(1000);
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(1000);
-  digitalWrite(LED_BUILTIN, LOW);
+  // Lectures des entrées
+
+  // Message disponible sur le buffer
+  if(Serial.available() > 0){
+    
+  }
+
 }
