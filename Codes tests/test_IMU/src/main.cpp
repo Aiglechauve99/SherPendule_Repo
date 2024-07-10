@@ -10,6 +10,7 @@ ICM20600 IMU_(true);
 int X0=0;
 int Y0 = 0;
 int Z0 = 0;
+float vitesse = 0.0;
 
 void setup() {
   Serial.begin(115200);
@@ -31,6 +32,12 @@ void loop() {
   //Serial.println("Vitesse tangentielle : X : "+ String((IMU_.getAccelerationX()-X0))+"\tY : " + String(IMU_.getAccelerationY()-Y0)+"\tZ : "+ String(IMU_.getAccelerationZ()-Z0) + "\tTempérature : "+String(IMU_.getTemperature()));
   //Serial.println("Vitesse angulaire : X : "+ String(IMU_.getGyroscopeX())+"\tY : " + String(IMU_.getGyroscopeY())+"\tZ : "+ String(IMU_.getGyroscopeZ()) + "\tTempérature : "+String(IMU_.getTemperature()));
   Serial.println("Vitesse angulaire Y : " + String(IMU_.getGyroscopeY()));
-  Serial.println("Vitesse tangeantielle Y : " + String(IMU_.getGyroscopeY()*degToRad*0.35));
+  vitesse = IMU_.getGyroscopeY()*degToRad*0.35;
+  Serial.println("Vitesse tangeantielle Y : " + String(vitesse));
+
+  if (vitesse >= 0.5 || vitesse <= -0.5){
+    Serial.println("Largage");
+    digitalWrite(32, LOW);
+  }
   delay(500);
 }
