@@ -19,7 +19,9 @@ enum State next_state(enum State current)
   }
 }*/
 
-switch(enum State transition){
+State transition;
+
+switch(transition){
   case READY:
     //initialize the board and pins
     break;
@@ -38,7 +40,11 @@ switch(enum State transition){
     //stabilise the pendulum for drop off
     break;
   case DROP:
-    //
+    //deactivate the electromagnet to drop into basket
+    break;
+  case RETURN:
+  //full speed back to the beginning
+    break;
 }
 
 
