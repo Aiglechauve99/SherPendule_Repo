@@ -70,24 +70,28 @@ void Stabiliser(){
 
 void loop() 
 {
-  PID_A PID_PenduleIMU(0.001, 0, 0, 0);
+  PID_A PID_PenduleIMU(0.005, 0.0001, 0.0003, 0.01);
+  PID_A PID_PendulePotentio(0.016, 0.001, 0.1, 0.01);
 
   double vitesseCible = 0;
+  double angleCible = 90;
   double VitesseMoteur = 0;
 
   for (int i = 0; i < 1000; ++i) 
   {
     //Serial.println("Vitesse angulaire Y : " + String(IMU_.getGyroscopeY()));
+    double correctionPendulePotentio = PID_PendulePotentio.calculsPIDpendule(angleCible, PotentioDeg());
     double correctionPenduleIMU = PID_PenduleIMU.calculsPIDpenduleIMU(vitesseCible, IMU_.getGyroscopeY());
 
-    Serial.println("correction: " + String(correctionPenduleIMU));
+    // Serial.println("correction: " + String(correctionPenduleIMU));
 
-    double commandeVitesseMoteur = correctionPenduleIMU;
+    double commandeVitesseMoteur1 = correctionPenduleIMU;
+    double commandeVitesseMoteur2 = correctionPendulePotentio;
+
+    double commandeVitesseMoteur = commandeVitesseMoteur1 + commandeVitesseMoteur2;
 
     VitesseMoteur = commandeVitesseMoteur;
     AX_.setMotorPWM(0, VitesseMoteur);
-
-    delay(2000);
 
   }
 }

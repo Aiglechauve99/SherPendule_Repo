@@ -36,14 +36,10 @@ double PID_A::calculsPIDpendule(double valeur_requis, double valeur_actuelle)
         double derive = (erreur - erreur_precedente) / temps_echantillonnage;
         double correction = kp * erreur + ki * integrale + kd * derive;
         erreur_precedente = erreur;
-        /*if (correction < 0.1 & correction > 0.01)
+        if (correction < 0.1 & correction > 0.02)
                 correction = 0.15;
-        if (correction > -0.1 & correction < -0.01)
+        if (correction > -0.1 & correction < -0.02)
                 correction = -0.15;
-        if (correction > 0.3)
-                correction = 0.3;
-        if (correction < -0.3)
-                correction = -0.3;*/
         return correction;
 }
 
@@ -55,7 +51,7 @@ double PID_A::calculsPIDpenduleIMU(double valeur_requis, double valeur_actuelle)
 
     integrale += erreur * temps_echantillonnage;
     double derive = (erreur - erreur_precedente) / temps_echantillonnage;
-    double correction = kp * erreur + ki * integrale + kd * derive;
+    double correction = kp * erreur + ki * integrale;
     erreur_precedente = erreur;
     
     return correction;
