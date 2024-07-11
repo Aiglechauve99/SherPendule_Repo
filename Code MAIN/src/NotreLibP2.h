@@ -4,11 +4,15 @@
 #include <LibS3GRO.h>
 #include <ArduinoJson.h>
 #include "strucMsg.h"
+#include "PID_A.h"
+
+#define MAGPIN 32
 
 class NotreLibP2{
 
 public:
     ArduinoX AX_;
+    VexQuadEncoder vex;
     struct Msg msgAEnvoyer;
     struct Msg msgRecu;
     
@@ -19,6 +23,10 @@ public:
     bool initRobot();
     bool readMsg();
     bool sendMsg();
+    bool controlMagnet(bool etat);
+    bool etatEnergie();
+    bool avanceDe(float distance);
+    float EncodeurOptiPos();
 
 private:
     
