@@ -15,7 +15,9 @@ void loop() {
 
   // Message disponible sur le buffer
   if(Serial.available() > 0){
-    
+    myLib_.readMsg();
   }
+
+  
 
 }
