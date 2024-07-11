@@ -6,10 +6,14 @@
 //ArduinoX AX_;
 NotreLibP2 myLib_;
 enum State {READY,PICK,APPROACH,SWING,OBSTACLE,STABILISE,DROP,RETURN} state;
+unsigned long tempsAvant = 0;
+bool compte = false;
+
 
 void setup() {
   myLib_.initRobot();
-  state = READY;
+  //state = READY;
+  state = APPROACH;
 }
 
 void loop() {
@@ -24,8 +28,7 @@ void loop() {
     case READY:
       Serial.println("State: READY");
       
-
-      if(millis()>5000){
+      if(myLib_.msgRecu.etape == 1){
         state=PICK;
       }
       break;
@@ -33,52 +36,52 @@ void loop() {
     case PICK:
       Serial.println("State: PICK");
       //Activate magnet
-      if(millis()>10000){
-        state=APPROACH;
+      myLib_.controlMagnet(HIGH);
+      if(!compte){
+        tempsAvant = millis();
+        compte = true;
+      }
+
+      if(millis()-tempsAvant >= 5000){
+        state = APPROACH;
       }
       break;
+
     case APPROACH:
       Serial.println("State: APPROACH");
       //move to position defined
-      if(millis()>15000){
-        *state=SWING;
-      }
+      myLib_.avanceDe(0.5);
     break;
+
     case SWING:
       Serial.println("State: SWING");
       //oscilolate pendulum until desired anclge and frequency
-      if(millis()>20000){
-        *state=OBSTACLE;
-      } 
+      
       break;
     case OBSTACLE:
       Serial.println("State: OBSTACLE");
     //pass the obstacle and get to the end place
-      if(millis()>25000){
-        *state=STABILISE;
-      } 
+      
     break;
     case STABILISE:
       Serial.println("State: STABILISE");
       //stabilise the pendulum for drop off
-      if(millis()>30000){
-        *state=DROP;
-      } 
+      
       break;
     case DROP:
       Serial.println("State: DROP");
       //deactivate the electromagnet to drop into basket
-      if(millis()>35000){
-        *state=RETURN;
-      } 
+      
       break;
     case RETURN:
       Serial.println("State: RETURN");
     //full speed back to the beginning
-    if(millis()>40000){
-        *state=PICK;
-      } 
+    
       break;
   }
 
+}
+
+void isrWrapper(){
+    myLib_.vex.isr();
 }
