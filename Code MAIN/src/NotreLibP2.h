@@ -27,6 +27,9 @@ public:
     bool etatEnergie();
     bool avanceDe(float distance);
     float EncodeurOptiPos();
+    bool oscillation();
+    float getAngle();
+    bool stabilise(float angle);
 
 private:
     
