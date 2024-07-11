@@ -11,16 +11,8 @@ bool NotreLibP2::initRobot(){
     Serial.begin(115200);
     Serial.println("Initialisation");
     AX_.init();
-    vex.init(2,3);
-    attachInterrupt(vex.getPinInt(), isrWrapper, FALLING);
-    vex.reset();
-
     
     return 0;
-}
-
-void isrWrapper(){
-    vex.isr();
 }
 
 bool NotreLibP2::readMsg(){
@@ -87,15 +79,13 @@ bool NotreLibP2::etatEnergie(){
 
 float NotreLibP2::EncodeurOptiPos(){
     float pos = vex.getCount()/225.441323;
-    return pos*-1;
+    return pos;
 }
 
 bool NotreLibP2::avanceDe(float positionRequis){
     PID_A pidMoteur(1.8, 0.05, 0, 0.01);
-    float VitesseMoteur = 0;
     float correctionMoteur = 0;
     unsigned long tempsAvant = millis();
-    float commandeVitesseMoteur = 0;
     bool goTo = true;
     float distance = 0;
 
@@ -108,11 +98,82 @@ bool NotreLibP2::avanceDe(float positionRequis){
 
             correctionMoteur = pidMoteur.calculsPIDmoteur(positionRequis, distance);
             AX_.setMotorPWM(0, correctionMoteur);
-            if(correctionMoteur<0.001 && correctionMoteur>-0.001){
+            if(correctionMoteur<0.02 && correctionMoteur>-0.02){
                 goTo = false;
                 Serial.println("Fin PID");
             }
         }
     }
+    return 0;
 }
 
+bool NotreLibP2::oscillation(){
+    unsigned long tempsAvant = 0;
+    float vitesse = 0.35;
+    int periode = 120;
+    float deg = 0;
+    bool enAvant = true;
+    bool oscillation = true;
+    const int bon = 40;
+
+    do{
+        deg = getAngle();
+        if(deg>150){
+            oscillation = false;
+            tempsAvant = millis();
+            break;
+        }
+
+        if (millis()-tempsAvant >= periode){
+            tempsAvant = millis();
+
+            if(periode < 1000){
+                periode += bon;
+            }
+        
+        vitesse *= -1;
+        AX_.setMotorPWM(0, vitesse);
+        Serial.println("Periode : "+ String(periode)+" Angle : " + String(deg));
+        
+        }
+    }while(oscillation);
+
+    AX_.setMotorPWM(0, 1.0);
+    Serial.println("Pied au plancher");
+    delay(500);
+
+    AX_.setMotorPWM(0, 0);
+    Serial.println("Stop");
+
+    return 0;
+}
+
+float NotreLibP2::getAngle(){
+    return analogRead(A5)*0.3203-63.95;
+}
+
+bool NotreLibP2::stabilise(float angle){
+    PID_A pidPendule(0.016, 0.001, 0.1, 0.01);
+    float correctionPendule = 0;
+    unsigned long tempsAvant = millis();
+    bool goTo = true;
+    float angleMesurer = 0;
+
+    while(goTo){
+        if(millis()-tempsAvant >= 10){
+            tempsAvant = millis();
+            
+            angleMesurer = getAngle();
+            Serial.println(angleMesurer);
+
+            correctionPendule = pidPendule.calculsPIDpendule(angle, angleMesurer);
+            AX_.setMotorPWM(0, correctionPendule);
+
+            if(correctionPendule<5 && correctionPendule>-5){
+                goTo = false;
+                Serial.println("Fin PID");
+            }
+        }
+    }
+    return 0;
+}

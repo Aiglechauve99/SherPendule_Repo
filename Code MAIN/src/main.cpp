@@ -5,6 +5,7 @@
 
 //ArduinoX AX_;
 NotreLibP2 myLib_;
+//VexQuadEncoder vex;
 enum State {READY,PICK,APPROACH,SWING,OBSTACLE,STABILISE,DROP,RETURN} state;
 unsigned long tempsAvant = 0;
 bool compte = false;
@@ -12,8 +13,12 @@ bool compte = false;
 
 void setup() {
   myLib_.initRobot();
+
+  myLib_.vex.init(2,3);
+  attachInterrupt(myLib_.vex.getPinInt(), []{myLib_.vex.isr();}, FALLING);
+  myLib_.vex.reset();
   //state = READY;
-  state = APPROACH;
+  state = STABILISE;
 }
 
 void loop() {
@@ -50,22 +55,31 @@ void loop() {
     case APPROACH:
       Serial.println("State: APPROACH");
       //move to position defined
-      myLib_.avanceDe(0.5);
+      if(!myLib_.avanceDe(0.5)){
+        state = STABILISE;
+      }
     break;
 
     case SWING:
       Serial.println("State: SWING");
       //oscilolate pendulum until desired anclge and frequency
+      myLib_.oscillation();
+      state = OBSTACLE;
       
       break;
     case OBSTACLE:
       Serial.println("State: OBSTACLE");
     //pass the obstacle and get to the end place
+      while(1);
       
     break;
     case STABILISE:
       Serial.println("State: STABILISE");
       //stabilise the pendulum for drop off
+      if(!myLib_.stabilise(90)){
+        //state = SWING;
+        Serial.println("Stable");
+      }
       
       break;
     case DROP:
@@ -82,6 +96,3 @@ void loop() {
 
 }
 
-void isrWrapper(){
-    myLib_.vex.isr();
-}
