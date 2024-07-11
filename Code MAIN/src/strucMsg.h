@@ -1,12 +1,15 @@
+#ifndef STRUCMSG_H
+#define STRUCTMSG_H
+
 struct Msg{
     unsigned long temps;
     int etape;
-    float consigne;
-    int etatEtape; // En cours 0, Fini = 1, Erreur = -1
+    int erreur;
     float anglePendule;
-    float vitesseMoteur;
     float distanceParcourue;
-    float distance;
+    float position;
     float voltageBatterie;
     float courantBatterie;
 };
+
+#endif
