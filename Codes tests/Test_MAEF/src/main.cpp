@@ -67,7 +67,7 @@ void sendMsg();
 void readMsg();
 void serialEvent();
 void runsequence();
-void handleState(State state);
+void handleState(State* state);
 
 /*---------------------------- fonctions "Main" -----------------------------*/
 
@@ -110,7 +110,7 @@ void loop() {
   pid_.run();
 
   //Handle the current State
-  handleState(currentState);
+  handleState(&currentState);
 }
 
 /*---------------------------Definition de fonctions ------------------------*/
@@ -160,7 +160,7 @@ void sendMsg(){
   doc["gyroZ"] = imu_.getGyroZ();
   doc["isGoal"] = pid_.isAtGoal();
   doc["actualTime"] = pid_.getActualDt();
-  doc["state"]=currentState;
+  //doc["state"]=currentState;
 
   // Serialisation
   serializeJson(doc, Serial);
@@ -196,7 +196,6 @@ void readMsg(){
      RunForward_ = doc["RunForward"];
   }
 
-  parse_msg = doc["setGoal"];
   if(!parse_msg.isNull()){
     pid_.disable();
     pid_.setGains(doc["setGoal"][0], doc["setGoal"][1], doc["setGoal"][2]);
@@ -227,39 +226,64 @@ void runSequence(){
 
 }
 
-void handleState(State state){
+void handleState(State* state){
 
-switch(state){
+switch(*state){
   case READY:
     Serial.println("State: READY");
     //initialize the board and pins
+    if(millis()>5000){
+      *state=PICK;
+    }
     break;
   case PICK:
     Serial.println("State: PICK");
     //Activate magnet
+    if(millis()>10000){
+      *state=APPROACH;
+    }
     break;
   case APPROACH:
     Serial.println("State: APPROACH");
     //move to position defined
+    if(millis()>15000){
+      *state=SWING;
+    }
    break;
   case SWING:
     Serial.println("State: SWING");
-    //oscilolate pendulum until desired anclge and frequency 
+    //oscilolate pendulum until desired anclge and frequency
+     if(millis()>20000){
+      *state=OBSTACLE;
+    } 
+    break;
   case OBSTACLE:
     Serial.println("State: OBSTACLE");
    //pass the obstacle and get to the end place
+    if(millis()>25000){
+      *state=STABILISE;
+    } 
    break;
   case STABILISE:
     Serial.println("State: STABILISE");
     //stabilise the pendulum for drop off
+    if(millis()>30000){
+      *state=DROP;
+    } 
     break;
   case DROP:
     Serial.println("State: DROP");
     //deactivate the electromagnet to drop into basket
+    if(millis()>35000){
+      *state=RETURN;
+    } 
     break;
   case RETURN:
     Serial.println("State: RETURN");
   //full speed back to the beginning
+  if(millis()>40000){
+      *state=PICK;
+    } 
     break;
 }
 }
