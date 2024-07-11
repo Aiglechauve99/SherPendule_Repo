@@ -40,7 +40,7 @@ bool NotreLibP2::sendMsg(){
 
     StaticJsonDocument<500> sendedDoc;
     // Elements du message
-    if(1){
+    if(0){
         sendedDoc["temps"] = millis();
         sendedDoc["etape"] = msgAEnvoyer.etape;
         sendedDoc["erreur"] = msgAEnvoyer.erreur;
