@@ -10,21 +10,22 @@ PID_A::PID_A(double kp, double ki, double kd, double temps_echantillonnage)
         this -> integrale = 0;
 }
 
-double PID_A::calculsPIDmoteur(double valeur_requis, double valeur_actuelle) 
+double PID_A::calculsPIDmoteur(double valeur_requis, double valeur_actuelle, float plafonVitesse) 
 {
         double erreur = valeur_requis - valeur_actuelle;
         integrale += erreur * temps_echantillonnage;
         double derive = (erreur - erreur_precedente) / temps_echantillonnage;
         double correction = kp * erreur + ki * integrale + kd * derive;
         erreur_precedente = erreur;
+
         if (correction < 0.1 & correction > 0.02)
                 correction = 0.15;
         if (correction > -0.1 & correction < -0.02)
                 correction = -0.15;
-        /*if (correction > 0.4)
-                correction = 0.4;
-        if (correction < -0.4)
-                correction = -0.4;*/
+        if (correction > plafonVitesse)
+                correction = plafonVitesse;
+        if (correction < -1*plafonVitesse)
+                correction = -1*plafonVitesse;
         return correction;
 }
 double PID_A::calculsPIDpendule(double valeur_requis, double valeur_actuelle) 
@@ -36,13 +37,29 @@ double PID_A::calculsPIDpendule(double valeur_requis, double valeur_actuelle)
         double derive = (erreur - erreur_precedente) / temps_echantillonnage;
         double correction = kp * erreur + ki * integrale + kd * derive;
         erreur_precedente = erreur;
-        if (correction < 0.1 & correction > 0.01)
+        
+        if (correction < 0.1 & correction > 0.03)
                 correction = 0.15;
-        if (correction > -0.1 & correction < -0.01)
+        if (correction > -0.1 & correction < -0.03)
                 correction = -0.15;
-        /*if (correction > 0.3)
-                correction = 0.3;
-        if (correction < -0.3)
-                correction = -0.3;*/
+
+        if (correction > 0.9)
+                correction = 0.9;
+        if (correction < -0.9)
+                correction = -0.9;
         return correction;
+}
+
+double PID_A::calculsPIDpenduleIMU(double valeur_requis, double valeur_actuelle)
+{
+    double erreur = valeur_requis - valeur_actuelle;
+    if (erreur <= 1 & erreur >= -1)
+                erreur = 0;
+
+    integrale += erreur * temps_echantillonnage;
+    double derive = (erreur - erreur_precedente) / temps_echantillonnage;
+    double correction = kp * erreur + ki * integrale;
+    erreur_precedente = erreur;
+    
+    return correction;
 }

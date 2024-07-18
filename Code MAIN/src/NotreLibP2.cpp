@@ -11,6 +11,7 @@ bool NotreLibP2::initRobot(){
     Serial.begin(115200);
     Serial.println("Initialisation");
     AX_.init();
+    IMU_.initialize();
     
     return 0;
 }
@@ -82,7 +83,7 @@ float NotreLibP2::EncodeurOptiPos(){
     return pos;
 }
 
-bool NotreLibP2::avanceDe(float positionRequis){
+bool NotreLibP2::avanceDe(float positionRequis, float vitesseMax){
     PID_A pidMoteur(1.8, 0.05, 0, 0.01);
     float correctionMoteur = 0;
     unsigned long tempsAvant = millis();
@@ -96,7 +97,7 @@ bool NotreLibP2::avanceDe(float positionRequis){
             distance = EncodeurOptiPos();
             Serial.println(distance);
 
-            correctionMoteur = pidMoteur.calculsPIDmoteur(positionRequis, distance);
+            correctionMoteur = pidMoteur.calculsPIDmoteur(positionRequis, distance, vitesseMax);
             AX_.setMotorPWM(0, correctionMoteur);
             if(correctionMoteur<0.02 && correctionMoteur>-0.02){
                 goTo = false;
@@ -112,13 +113,15 @@ bool NotreLibP2::oscillation(){
     float vitesse = 0.35;
     int periode = 120;
     float deg = 0;
+    float vitesseIMU = 0;
     bool enAvant = true;
     bool oscillation = true;
     const int bon = 40;
 
     do{
         deg = getAngle();
-        if(deg>150){
+        vitesseIMU = IMU_.getGyroscopeY();
+        if(deg < 30 && vitesseIMU < 0){
             oscillation = false;
             tempsAvant = millis();
             break;
@@ -140,11 +143,18 @@ bool NotreLibP2::oscillation(){
 
     AX_.setMotorPWM(0, 1.0);
     Serial.println("Pied au plancher");
-    delay(500);
+    delay(300);
 
-    AX_.setMotorPWM(0, 0);
-    Serial.println("Stop");
+    for(int i =100; i>0; i--){
+        AX_.setMotorPWM(0, i*0.01);
+        delay(10);
+    }
 
+    return 0;
+}
+
+bool NotreLibP2::oscillation2(){
+    avanceDe(1.25, 1);
     return 0;
 }
 
@@ -153,23 +163,41 @@ float NotreLibP2::getAngle(){
 }
 
 bool NotreLibP2::stabilise(float angle){
-    PID_A pidPendule(0.016, 0.001, 0.1, 0.01);
-    float correctionPendule = 0;
+    PID_A PID_PenduleIMU(0.005, 0.0001, 0.0003, 0.01);
+    PID_A PID_PendulePotentio(0.011, 0, 0.001, 0.01);
+
+    double correctionPendule = 0;
+    double correctionPenduleIMU = 0;
     unsigned long tempsAvant = millis();
     bool goTo = true;
     float angleMesurer = 0;
+    float vitesseCible = 0;
+    float commandeMoteur = 0;
+    float vitesseIMU = 0;
+    //int compteurReussite = 0;
 
     while(goTo){
         if(millis()-tempsAvant >= 10){
             tempsAvant = millis();
             
             angleMesurer = getAngle();
+            vitesseIMU = IMU_.getGyroscopeY();
             Serial.println(angleMesurer);
 
-            correctionPendule = pidPendule.calculsPIDpendule(angle, angleMesurer);
-            AX_.setMotorPWM(0, correctionPendule);
+            correctionPendule = PID_PendulePotentio.calculsPIDpendule(angle, angleMesurer);
+            correctionPenduleIMU = PID_PenduleIMU.calculsPIDpenduleIMU(vitesseCible, IMU_.getGyroscopeY());
+            
+            //commandeMoteur = correctionPendule + correctionPenduleIMU;
+            commandeMoteur = correctionPendule;
 
-            if(correctionPendule<5 && correctionPendule>-5){
+            /*if(angleMesurer>160 or angleMesurer < 20){
+                commandeMoteur = 0;
+            }*/
+
+            Serial.println("Pendule : "+String(correctionPendule)+" IMU : " + String(correctionPenduleIMU,5));
+            AX_.setMotorPWM(0, commandeMoteur);
+
+           if((correctionPendule<0.03 && correctionPendule>-0.03) && (vitesseIMU > -3 && vitesseIMU < 3)){
                 goTo = false;
                 Serial.println("Fin PID");
             }

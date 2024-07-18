@@ -13,6 +13,7 @@ private:
 public:
     PID_A(double kp, double ki, double kd, double temps_echantillonnage);
     double calculsPIDpendule(double valeur_requis, double valeur_actuelle);
-    double calculsPIDmoteur(double valeur_requis, double valeur_actuelle);
+    double calculsPIDmoteur(double valeur_requis, double valeur_actuelle, float plafonVitesse);
+    double calculsPIDpenduleIMU(double valeur_requis, double valeur_actuelle);
 };
 #endif
