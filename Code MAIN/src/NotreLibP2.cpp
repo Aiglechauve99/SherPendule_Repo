@@ -9,7 +9,7 @@ NotreLibP2::~NotreLibP2()
 
 bool NotreLibP2::initRobot(){
     Serial.begin(115200);
-    Serial.println("Initialisation");
+    //Serial.println("Initialisation");
     AX_.init();
     IMU_.initialize();
     
@@ -33,7 +33,14 @@ bool NotreLibP2::readMsg(){
     if(parse_msg.isNull()){
         return 1;
     }
-    msgRecu.etape = parse_msg.as<int>();
+
+    if(parse_msg.as<int>() == 1){
+        Demarrage = true;
+    }
+    else{
+        Demarrage = false;
+    }
+    //msgRecu.etape = parse_msg.as<int>();
     return 0;
 }
 
@@ -41,8 +48,8 @@ bool NotreLibP2::sendMsg(){
 
     StaticJsonDocument<500> sendedDoc;
     // Elements du message
-    if(0){
-        sendedDoc["temps"] = millis();
+    if(1){
+        sendedDoc["temps"] = msgAEnvoyer.temps;
         sendedDoc["etape"] = msgAEnvoyer.etape;
         sendedDoc["erreur"] = msgAEnvoyer.erreur;
         sendedDoc["anglePendule"] = msgAEnvoyer.anglePendule;
@@ -52,6 +59,7 @@ bool NotreLibP2::sendMsg(){
         sendedDoc["courantBatterie"] = msgAEnvoyer.courantBatterie;
         // Serialisation
         serializeJson(sendedDoc, Serial);
+        Serial.println("");
     }
     else{
         Serial.println("temps : "+ String(millis()));
@@ -66,6 +74,20 @@ bool NotreLibP2::sendMsg(){
   
 }
 
+bool NotreLibP2::getDataPourMessage(){
+    msgAEnvoyer.temps = millis();
+    msgAEnvoyer.erreur = erreur;
+    msgAEnvoyer.position = EncodeurOptiPos();
+    msgAEnvoyer.anglePendule = getAngle();
+    msgAEnvoyer.distanceParcourue = distanceParcourue;
+    msgAEnvoyer.position = EncodeurOptiPos();
+    msgAEnvoyer.voltageBatterie=AX_.getVoltage();
+    msgAEnvoyer.courantBatterie=AX_.getCurrent();
+}
+
+void NotreLibP2::setErreur(){
+    erreur = true; 
+}
 bool NotreLibP2::controlMagnet(bool etat){
     digitalWrite(MAGPIN,etat);
     return 0;
@@ -80,6 +102,7 @@ bool NotreLibP2::etatEnergie(){
 
 float NotreLibP2::EncodeurOptiPos(){
     float pos = vex.getCount()/225.441323;
+    distanceParcourue+=pos;
     return pos;
 }
 
@@ -205,3 +228,8 @@ bool NotreLibP2::stabilise(float angle){
     }
     return 0;
 }
+
+bool NotreLibP2::getDemarrage(){
+    return Demarrage;
+}
+

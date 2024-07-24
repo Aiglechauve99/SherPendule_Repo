@@ -6,8 +6,9 @@
 //ArduinoX AX_;
 NotreLibP2 myLib_;
 //VexQuadEncoder vex;
-enum State {READY,PICK,APPROACH,SWING,STOP,STABILISE,DROP, GOHOME, MESURE} state;
+enum State {READY,PICK,APPROACH,SWING,STABILISE,DROP, GOHOME,STOP, MESURE, SEND} state;
 unsigned long tempsAvant = 0;
+unsigned long tempsAvantMsg = 0;
 bool compte = false;
 float position = 0;
 
@@ -18,9 +19,10 @@ void setup() {
   myLib_.vex.init(2,3);
   attachInterrupt(myLib_.vex.getPinInt(), []{myLib_.vex.isr();}, FALLING);
   myLib_.vex.reset();
-  state = PICK;
+  //state = PICK;
   //state = MESURE;
-  //state = STABILISE;
+  state = SEND;
+  myLib_.msgAEnvoyer.etape = READY;
 }
 
 void loop() {
@@ -31,12 +33,22 @@ void loop() {
     myLib_.readMsg();
   }
 
+  // Envoie des messages
+  if((millis()-tempsAvantMsg > 1000) && myLib_.getDemarrage()){
+    tempsAvantMsg = millis();
+    myLib_.getDataPourMessage();
+    //myLib_.sendMsg();
+
+  }
+
+
   switch(state){
     case READY:
       Serial.println("State: READY");
       
       if(myLib_.msgRecu.etape == 1){
         state=PICK;
+        myLib_.msgAEnvoyer.etape = PICK;
       }
       break;
       
@@ -52,6 +64,7 @@ void loop() {
       if(millis()-tempsAvant >= 5000){
         compte = false;
         state = APPROACH;
+        myLib_.msgAEnvoyer.etape = APPROACH;
       }
       break;
 
@@ -68,6 +81,7 @@ void loop() {
         myLib_.AX_.setMotorPWM(0,0);
         delay(100);
         state = SWING;
+        myLib_.msgAEnvoyer.etape = SWING;
       }
 
     break;
@@ -78,6 +92,7 @@ void loop() {
       //myLib_.oscillation();
       myLib_.oscillation2();
       state = STABILISE;
+      myLib_.msgAEnvoyer.etape = STABILISE;
       //state = STOP;
       
       break;
@@ -100,6 +115,7 @@ void loop() {
       //stabilise the pendulum for drop off
       if(!myLib_.stabilise(90)){
         state = DROP;
+        myLib_.msgAEnvoyer.etape = DROP;
         Serial.println("Stable");
       }
       
@@ -113,6 +129,7 @@ void loop() {
       delay(500);
       myLib_.controlMagnet(LOW);
       state = GOHOME;
+      myLib_.msgAEnvoyer.etape = GOHOME;
       break;
 
     case GOHOME:
@@ -120,6 +137,7 @@ void loop() {
       //Serial.println(myLib_.getAngle());
       if(!myLib_.avanceDe(0, 0.7)){
         state = PICK;
+        myLib_.msgAEnvoyer.etape = PICK;
       }
       break;
 
@@ -128,6 +146,25 @@ void loop() {
       //Serial.println(myLib_.getAngle());
       Serial.println(myLib_.IMU_.getGyroscopeY());
       delay(100);
+    
+      break;
+
+      case SEND:
+        //Serial.println("State: SEND");
+        if(myLib_.getDemarrage()){
+          for(int i=1; i<7; i++){
+            myLib_.msgAEnvoyer.temps=i*1000;
+            myLib_.msgAEnvoyer.position=0.25*i;
+            myLib_.msgAEnvoyer.etape = i;
+            myLib_.etatEnergie();
+            myLib_.sendMsg();
+
+
+            delay(1000);
+          }
+        }
+      
+
     
       break;
   }

@@ -18,6 +18,7 @@ public:
     struct Msg msgAEnvoyer;
     struct Msg msgRecu;
     
+    
 
     NotreLibP2();
     ~NotreLibP2();
@@ -33,9 +34,14 @@ public:
     bool oscillation2();
     float getAngle();
     bool stabilise(float angle);
+    bool getDemarrage();
+    bool getDataPourMessage();
+    void setErreur();
 
 private:
-    
+    bool Demarrage = false;
+    bool erreur= false;
+    float distanceParcourue =0;
 };
 
 #endif
