@@ -9,7 +9,7 @@ NotreLibP2::~NotreLibP2()
 
 bool NotreLibP2::initRobot(){
     Serial.begin(115200);
-    //Serial.println("Initialisation");
+    Serial.println("Initialisation");
     AX_.init();
     IMU_.initialize();
     
@@ -88,6 +88,7 @@ bool NotreLibP2::getDataPourMessage(){
 void NotreLibP2::setErreur(){
     erreur = true; 
 }
+
 bool NotreLibP2::controlMagnet(bool etat){
     digitalWrite(MAGPIN,etat);
     return 0;
@@ -112,6 +113,9 @@ bool NotreLibP2::avanceDe(float positionRequis, float vitesseMax){
     unsigned long tempsAvant = millis();
     bool goTo = true;
     float distance = 0;
+    float distanceAvant = 0;
+
+    int compteur = 0;
 
     while(goTo){
         if(millis()-tempsAvant >= 100){
@@ -122,11 +126,21 @@ bool NotreLibP2::avanceDe(float positionRequis, float vitesseMax){
 
             correctionMoteur = pidMoteur.calculsPIDmoteur(positionRequis, distance, vitesseMax);
             AX_.setMotorPWM(0, correctionMoteur);
+
+            compteur++;
             if(correctionMoteur<0.02 && correctionMoteur>-0.02){
                 goTo = false;
                 Serial.println("Fin PID");
             }
+
+            if(compteur == 20 && distance == distanceAvant){
+                goTo = false;
+                vex.reset();
+                Serial.println("Reset distance");
+            }
         }
+
+        
     }
     return 0;
 }
