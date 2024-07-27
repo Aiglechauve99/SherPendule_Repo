@@ -10,6 +10,7 @@ struct Msg{
     float position;
     float voltageBatterie;
     float courantBatterie;
+    int compteur;
 };
 
 #endif

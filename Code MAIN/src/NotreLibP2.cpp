@@ -57,6 +57,7 @@ bool NotreLibP2::sendMsg(){
         sendedDoc["position"] = msgAEnvoyer.position;
         sendedDoc["voltageBatterie"] = msgAEnvoyer.voltageBatterie;
         sendedDoc["courantBatterie"] = msgAEnvoyer.courantBatterie;
+        sendedDoc["compteurEtape"] = msgAEnvoyer.compteur;
         // Serialisation
         serializeJson(sendedDoc, Serial);
         Serial.println("");
@@ -83,6 +84,7 @@ bool NotreLibP2::getDataPourMessage(){
     msgAEnvoyer.position = EncodeurOptiPos();
     msgAEnvoyer.voltageBatterie=AX_.getVoltage();
     msgAEnvoyer.courantBatterie=AX_.getCurrent();
+    msgAEnvoyer.compteur = compteurEtape;
 }
 
 void NotreLibP2::setErreur(){
@@ -103,7 +105,8 @@ bool NotreLibP2::etatEnergie(){
 
 float NotreLibP2::EncodeurOptiPos(){
     float pos = vex.getCount()/225.441323;
-    distanceParcourue+=pos;
+    
+    
     return pos;
 }
 
@@ -130,7 +133,7 @@ bool NotreLibP2::avanceDe(float positionRequis, float vitesseMax){
             compteur++;
             if(correctionMoteur<0.02 && correctionMoteur>-0.02){
                 goTo = false;
-                Serial.println("Fin PID");
+                Serial.println("Fin PID moteur");
             }
 
             if(compteur == 20 && distance == distanceAvant){
@@ -142,6 +145,8 @@ bool NotreLibP2::avanceDe(float positionRequis, float vitesseMax){
 
         
     }
+
+    //distanceParcourue+=EncodeurOptiPos();
     return 0;
 }
 
@@ -191,8 +196,7 @@ bool NotreLibP2::oscillation(){
 }
 
 bool NotreLibP2::oscillation2(){
-    avanceDe(1.25, 1);
-    return 0;
+    return avanceDe(1.22, 1);
 }
 
 float NotreLibP2::getAngle(){
@@ -200,8 +204,8 @@ float NotreLibP2::getAngle(){
 }
 
 bool NotreLibP2::stabilise(float angle){
-    PID_A PID_PenduleIMU(0.005, 0.0001, 0.0003, 0.01);
-    PID_A PID_PendulePotentio(0.011, 0, 0.001, 0.01);
+    PID_A PID_PenduleIMU(0.005, 0, 0.0003, 0.01);
+    PID_A PID_PendulePotentio(0.016, 0, 0.003, 0.01);
 
     double correctionPendule = 0;
     double correctionPenduleIMU = 0;
@@ -224,14 +228,14 @@ bool NotreLibP2::stabilise(float angle){
             correctionPendule = PID_PendulePotentio.calculsPIDpendule(angle, angleMesurer);
             correctionPenduleIMU = PID_PenduleIMU.calculsPIDpenduleIMU(vitesseCible, IMU_.getGyroscopeY());
             
-            //commandeMoteur = correctionPendule + correctionPenduleIMU;
-            commandeMoteur = correctionPendule;
+            commandeMoteur = correctionPendule + correctionPenduleIMU;
+            //commandeMoteur = correctionPendule;
 
             /*if(angleMesurer>160 or angleMesurer < 20){
                 commandeMoteur = 0;
             }*/
 
-            Serial.println("Pendule : "+String(correctionPendule)+" IMU : " + String(correctionPenduleIMU,5));
+            //Serial.println("Pendule : "+String(correctionPendule)+" IMU : " + String(correctionPenduleIMU,5));
             AX_.setMotorPWM(0, commandeMoteur);
 
            if((correctionPendule<0.03 && correctionPendule>-0.03) && (vitesseIMU > -3 && vitesseIMU < 3)){
@@ -246,4 +250,15 @@ bool NotreLibP2::stabilise(float angle){
 bool NotreLibP2::getDemarrage(){
     return Demarrage;
 }
+
+void NotreLibP2::calculDistance(){
+    distanceParcourue += abs((EncodeurOptiPos()-anciennePosition));
+    anciennePosition = EncodeurOptiPos();
+}
+
+void NotreLibP2::incrementCmptrEtape(){
+    compteurEtape++;
+}
+
+
 

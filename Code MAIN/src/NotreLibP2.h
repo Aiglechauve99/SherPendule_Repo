@@ -37,11 +37,16 @@ public:
     bool getDemarrage();
     bool getDataPourMessage();
     void setErreur();
+    void calculDistance();
+    void incrementCmptrEtape();
+    
 
 private:
     bool Demarrage = false;
     bool erreur= false;
     float distanceParcourue =0;
+    float anciennePosition = 0;
+    int compteurEtape = 0;
 };
 
 #endif

@@ -8,6 +8,7 @@ NotreLibP2 myLib_;
 enum State {READY,PICK,APPROACH,SWING,STABILISE,DROP, GOHOME,STOP, MESURE, SEND} state, previousState;
 unsigned long tempsAvant = 0;
 unsigned long tempsAvantMsg = 0;
+unsigned long tempsAvantCmptr = 0;
 bool compte = false;
 float position = 0;
 
@@ -43,6 +44,13 @@ void loop() {
 
   }
 
+  if((millis()-tempsAvantCmptr > 50)){
+    tempsAvantCmptr = millis();
+    myLib_.calculDistance();
+
+  }
+
+
   switch(state){
     case READY:
       //Serial.println("State: READY");
@@ -71,7 +79,7 @@ void loop() {
         compte = true;
       }
 
-      if(millis()-tempsAvant >= 5000){
+      if(millis()-tempsAvant >= 3000){
         compte = false;
         Serial.println("State: APPROACH");
         state = APPROACH;
@@ -90,7 +98,7 @@ void loop() {
       */
 
       // Position pour oscillation 2
-      if(!myLib_.avanceDe(0.6, 0.4)){
+      if(!myLib_.avanceDe(0.45, 0.4)){
         myLib_.AX_.setMotorPWM(0,0);
         delay(100);
         state = SWING;
@@ -120,6 +128,8 @@ void loop() {
         myLib_.stabilise(90);
       }*/
 
+     
+
       if(!myLib_.stabilise(90)){
         Serial.println("Stable");
 
@@ -137,8 +147,9 @@ void loop() {
       //position = myLib_.EncodeurOptiPos();
       //Serial.println(position);
 
-      if(!myLib_.avanceDe((1.25), 0.4)){
+      if(!myLib_.avanceDe((1.22), 0.4)){
         myLib_.controlMagnet(LOW);
+        myLib_.incrementCmptrEtape();
 
         Serial.println("State: GOHOME");
         state = GOHOME;
