@@ -135,11 +135,12 @@ bool NotreLibP2::avanceDe(float positionRequis, float vitesseMax){
                 goTo = false;
                 Serial.println("Fin PID moteur");
             }
-
-            if(compteur == 20 && distance == distanceAvant){
+            Serial.println("Compteur PID : "+String(compteur));
+            if(compteur >= 25 && distance <=0.05){
                 goTo = false;
                 vex.reset();
-                Serial.println("Reset distance");
+                AX_.setMotorPWM(0,0);
+                Serial.println("-------------------------->Reset distance");
             }
         }
 

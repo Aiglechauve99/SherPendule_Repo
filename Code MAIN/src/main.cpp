@@ -11,6 +11,7 @@ unsigned long tempsAvantMsg = 0;
 unsigned long tempsAvantCmptr = 0;
 bool compte = false;
 float position = 0;
+float positionBack = -0.02;
 
 
 void setup() {
@@ -79,7 +80,7 @@ void loop() {
         compte = true;
       }
 
-      if(millis()-tempsAvant >= 3000){
+      if(millis()-tempsAvant >= 1500){
         compte = false;
         Serial.println("State: APPROACH");
         state = APPROACH;
@@ -98,7 +99,9 @@ void loop() {
       */
 
       // Position pour oscillation 2
-      if(!myLib_.avanceDe(0.45, 0.4)){
+      // Position d'approche avec 4 sapins = 0.45
+      // Position d'approche avec 5 sapins = 43
+      if(!myLib_.avanceDe(0.43, 0.4)){
         myLib_.AX_.setMotorPWM(0,0);
         delay(100);
         state = SWING;
@@ -147,7 +150,7 @@ void loop() {
       //position = myLib_.EncodeurOptiPos();
       //Serial.println(position);
 
-      if(!myLib_.avanceDe((1.22), 0.4)){
+      if(!myLib_.avanceDe((1.19), 0.4)){
         myLib_.controlMagnet(LOW);
         myLib_.incrementCmptrEtape();
 
@@ -163,7 +166,10 @@ void loop() {
       //Serial.println("State: GOHOME");
       //Serial.println(myLib_.getAngle());
       if(previousState==DROP){
-        if(!myLib_.avanceDe(0, 0.7)){
+        if(myLib_.msgAEnvoyer.compteur >=10){
+          positionBack = -0.03;
+        }
+        if(!myLib_.avanceDe(positionBack, 0.7)){
           Serial.println("State: PICK");
           state = PICK;
           previousState = GOHOME;
