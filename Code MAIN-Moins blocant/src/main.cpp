@@ -20,10 +20,10 @@ void setup() {
   myLib_.vex.init(2,3);
   attachInterrupt(myLib_.vex.getPinInt(), []{myLib_.vex.isr();}, FALLING);
   myLib_.vex.reset();
-  //state = PICK;
+  state = APPROACH;
   //state = MESURE;
   //state = SEND;
-  state = READY;
+  //state = READY;
   myLib_.msgAEnvoyer.etape = READY;
 }
 
@@ -91,21 +91,14 @@ void loop() {
 
     case APPROACH:
       //Serial.println("State: APPROACH");
-      // Position pour oscillation 1
-      /*
-      if(!myLib_.avanceDe(0.3, 0.4)){
-        state = SWING;
-      }
-      */
-
-      // Position pour oscillation 2
-      // Position d'approche avec 4 sapins = 0.45
-      // Position d'approche avec 5 sapins = 43
-      if(!myLib_.avanceDe(0.43, 0.4)){
+      myLib_.avanceDe(0.43, 0.4);
+      if(myLib_.fini){
+        myLib_.fini = false;
         myLib_.AX_.setMotorPWM(0,0);
         delay(100);
         state = SWING;
-        myLib_.msgAEnvoyer.etape = SWING;
+        Serial.println("Fin Approach");
+        //myLib_.msgAEnvoyer.etape = SWING;
       }
 
       break;

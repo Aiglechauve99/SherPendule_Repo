@@ -120,35 +120,36 @@ bool NotreLibP2::avanceDe(float positionRequis, float vitesseMax){
 
     int compteur = 0;
 
-    while(goTo){
-        if(millis()-tempsAvant >= 100){
-            tempsAvant = millis();
-            
-            distance = EncodeurOptiPos();
-            Serial.println(distance);
+    Serial.println(String(millis())+ " "+String(tempsAvant));
 
-            correctionMoteur = pidMoteur.calculsPIDmoteur(positionRequis, distance, vitesseMax);
-            AX_.setMotorPWM(0, correctionMoteur);
-
-            compteur++;
-            if(correctionMoteur<0.02 && correctionMoteur>-0.02){
-                goTo = false;
-                Serial.println("Fin PID moteur");
-            }
-            Serial.println("Compteur PID : "+String(compteur));
-            if(compteur >= 25 && distance <=0.05){
-                goTo = false;
-                vex.reset();
-                AX_.setMotorPWM(0,0);
-                Serial.println("-------------------------->Reset distance");
-            }
-        }
-
+    if(millis()-tempsAvant >= 100){
+        tempsAvant = millis();
+        Serial.println("M_A_J");
         
+        distance = EncodeurOptiPos();
+        Serial.println(distance);
+
+        correctionMoteur = pidMoteur.calculsPIDmoteur(positionRequis, distance, vitesseMax);
+        AX_.setMotorPWM(0, correctionMoteur);
+
+        compteur++;
+        if(correctionMoteur<0.02 && correctionMoteur>-0.02){
+            goTo = false;
+            fini = true;
+            Serial.println("Fin PID moteur");
+        }
+        Serial.println("Compteur PID : "+String(compteur));
+        if(compteur >= 25 && distance <=0.05){
+            goTo = false;
+            fini = true;
+            vex.reset();
+            AX_.setMotorPWM(0,0);
+            Serial.println("-------------------------->Reset distance");
+        }
     }
 
-    //distanceParcourue+=EncodeurOptiPos();
-    return 0;
+        
+    
 }
 
 bool NotreLibP2::oscillation(){

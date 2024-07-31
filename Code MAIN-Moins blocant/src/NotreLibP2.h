@@ -17,6 +17,7 @@ public:
     VexQuadEncoder vex;
     struct Msg msgAEnvoyer;
     struct Msg msgRecu;
+    bool fini = false;
     
     
 
